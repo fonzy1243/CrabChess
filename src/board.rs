@@ -169,3 +169,63 @@ fn gen_shift(x: u64, s: i32) -> u64 {
         x >> -s
     }
 }
+
+// --------------------------------------------------
+// Population Count
+// --------------------------------------------------
+
+// From Donald Knuth, The Art of Computer Programming
+const K1: u64 = 0x5555555555555555; /* -1/3 */
+const K2: u64 = 0x3333333333333333; /* -1/5 */
+const K4: u64 = 0x0f0f0f0f0f0f0f0f; /* -1/17 */
+const KF: u64 = 0x0101010101010101; /* -1/255 */
+
+fn pop_count(mut x: u64) -> i32 {
+    x = x - ((x >> 1) & K1); // put count of each 2 bits into those 2 bits
+    x = (x & K2) + ((x >> 2) & K2); // put count of each 4 bits into those 4 bits
+    x = (x + (x >> 4)) & K4; // put count of each 8 bits into those 8 bits
+    x = (x * KF) >> 56; // returns 8 MSBs of x + (x << 8) + (x << 16) + ...
+    x as i32
+}
+
+fn hamming_distance(a: u64, b: u64) -> i32 {
+    pop_count(a ^ b)
+}
+
+// --------------------------------------------------
+// Pawn Pushes
+// --------------------------------------------------
+
+fn w_single_push_targets(w_pawns: u64, empty: u64) -> u64 {
+    nort_one(w_pawns) & empty
+}
+
+fn w_dbl_push_targets(w_pawns: u64, empty: u64) -> u64 {
+    let rank4: u64 = 0x00000000FF000000;
+    let single_pushes = w_single_push_targets(w_pawns, empty);
+    nort_one(single_pushes) & empty & rank4
+}
+
+fn b_single_push_targets(b_pawns: u64, empty: u64) -> u64 {
+    sout_one(b_pawns) & empty
+}
+
+fn b_dbl_push_targets(b_pawns: u64, empty: u64) -> u64 {
+    let rank5: u64 = 0x00000000FF000000;
+    let single_pushes = b_single_push_targets(b_pawns, empty);
+    sout_one(single_pushes) & empty & rank5
+}
+
+fn w_pawns_able_to_push(w_pawns: u64, empty: u64) -> u64 {
+    sout_one(empty) & w_pawns
+}
+
+fn w_pawns_able_to_dbl_push(w_pawns: u64, empty: u64) -> u64 {
+    let rank4: u64 = 0x00000000FF000000;
+    let empty_rank3 = sout_one(empty & rank4) & empty;
+    w_pawns_able_to_push(w_pawns, empty_rank3)
+}
+
+fn single_push_targets(pawns: u64, empty: u64, color: i32) -> u64 {
+    rotate_left(pawns, 8 - (color << 4)) & empty
+}
