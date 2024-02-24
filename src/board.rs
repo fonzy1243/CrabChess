@@ -40,30 +40,75 @@ pub(crate) struct Board {
     square: [i32; 64],
 }
 
-impl std::fmt::Display for Board {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        for i in 0..self.square.len() {
-            if i % 8 == 0 {
-                writeln!(f)?;
-            }
-
-            match self.square[i] {
-                x if x == Piece::Empty.into() => write!(f, " "),
-                x if x == Color::White | Piece::Pawn => write!(f, "♙"),
-                x if x == Color::Black | Piece::Pawn => write!(f, "♟︎"),
-                x if x == Color::White | Piece::Knight => write!(f, "♘"),
-                x if x == Color::Black | Piece::Knight => write!(f, "♞"),
-                x if x == Color::White | Piece::Bishop => write!(f, "♗"),
-                x if x == Color::Black | Piece::Bishop => write!(f, "♝"),
-                x if x == Color::White | Piece::Rook => write!(f, "♖"),
-                x if x == Color::Black | Piece::Rook => write!(f, "♜"),
-                x if x == Color::White | Piece::Queen => write!(f, "♕"),
-                x if x == Color::Black | Piece::Queen => write!(f, "♛"),
-                x if x == Color::White | Piece::King => write!(f, "♔"),
-                x if x == Color::Black | Piece::King => write!(f, "♚"),
-                _ => panic!("Board has invalid piece."),
-            }?;
+impl Default for Board {
+    fn default() -> Self {
+        Self {
+            square: [
+                Color::White | Piece::Rook,
+                Color::White | Piece::Knight,
+                Color::White | Piece::Bishop,
+                Color::White | Piece::Queen,
+                Color::White | Piece::King,
+                Color::White | Piece::Bishop,
+                Color::White | Piece::Knight,
+                Color::White | Piece::Rook,
+                Color::White | Piece::Pawn,
+                Color::White | Piece::Pawn,
+                Color::White | Piece::Pawn,
+                Color::White | Piece::Pawn,
+                Color::White | Piece::Pawn,
+                Color::White | Piece::Pawn,
+                Color::White | Piece::Pawn,
+                Color::White | Piece::Pawn,
+                Piece::Empty.into(),
+                Piece::Empty.into(),
+                Piece::Empty.into(),
+                Piece::Empty.into(),
+                Piece::Empty.into(),
+                Piece::Empty.into(),
+                Piece::Empty.into(),
+                Piece::Empty.into(),
+                Piece::Empty.into(),
+                Piece::Empty.into(),
+                Piece::Empty.into(),
+                Piece::Empty.into(),
+                Piece::Empty.into(),
+                Piece::Empty.into(),
+                Piece::Empty.into(),
+                Piece::Empty.into(),
+                Piece::Empty.into(),
+                Piece::Empty.into(),
+                Piece::Empty.into(),
+                Piece::Empty.into(),
+                Piece::Empty.into(),
+                Piece::Empty.into(),
+                Piece::Empty.into(),
+                Piece::Empty.into(),
+                Piece::Empty.into(),
+                Piece::Empty.into(),
+                Piece::Empty.into(),
+                Piece::Empty.into(),
+                Piece::Empty.into(),
+                Piece::Empty.into(),
+                Piece::Empty.into(),
+                Piece::Empty.into(),
+                Color::Black | Piece::Pawn,
+                Color::Black | Piece::Pawn,
+                Color::Black | Piece::Pawn,
+                Color::Black | Piece::Pawn,
+                Color::Black | Piece::Pawn,
+                Color::Black | Piece::Pawn,
+                Color::Black | Piece::Pawn,
+                Color::Black | Piece::Pawn,
+                Color::Black | Piece::Rook,
+                Color::Black | Piece::Knight,
+                Color::Black | Piece::Bishop,
+                Color::Black | Piece::Queen,
+                Color::Black | Piece::King,
+                Color::Black | Piece::Bishop,
+                Color::Black | Piece::Knight,
+                Color::Black | Piece::Rook,
+            ],
         }
-        Ok(())
     }
 }
