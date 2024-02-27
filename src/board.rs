@@ -5,6 +5,9 @@ enum Color {
     Black = 16,
 }
 
+pub const WHITE: Color = Color::White;
+pub const BLACK: Color = Color::Black;
+
 impl From<Color> for i32 {
     fn from(value: Color) -> Self {
         value as Self
@@ -20,6 +23,14 @@ enum Piece {
     Queen = 5,
     King = 6,
 }
+
+pub const EMPTY: Piece = Piece::Empty;
+pub const PAWN: Piece = Piece::Pawn;
+pub const KNIGHT: Piece = Piece::Knight;
+pub const BISHOP: Piece = Piece::Bishop;
+pub const ROOK: Piece = Piece::Rook;
+pub const QUEEN: Piece = Piece::Queen;
+pub const KING: Piece = Piece::King;
 
 impl BitOr<Piece> for Color {
     type Output = i32;
@@ -38,32 +49,81 @@ impl From<Piece> for i32 {
 #[derive(Debug)]
 pub(crate) struct Board {
     square: [i32; 64],
+    is_white_turn: bool,
 }
 
-impl std::fmt::Display for Board {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        for i in 0..self.square.len() {
-            if i % 8 == 0 {
-                writeln!(f)?;
-            }
-
-            match self.square[i] {
-                x if x == Piece::Empty.into() => write!(f, " "),
-                x if x == Color::White | Piece::Pawn => write!(f, "♙"),
-                x if x == Color::Black | Piece::Pawn => write!(f, "♟︎"),
-                x if x == Color::White | Piece::Knight => write!(f, "♘"),
-                x if x == Color::Black | Piece::Knight => write!(f, "♞"),
-                x if x == Color::White | Piece::Bishop => write!(f, "♗"),
-                x if x == Color::Black | Piece::Bishop => write!(f, "♝"),
-                x if x == Color::White | Piece::Rook => write!(f, "♖"),
-                x if x == Color::Black | Piece::Rook => write!(f, "♜"),
-                x if x == Color::White | Piece::Queen => write!(f, "♕"),
-                x if x == Color::Black | Piece::Queen => write!(f, "♛"),
-                x if x == Color::White | Piece::King => write!(f, "♔"),
-                x if x == Color::Black | Piece::King => write!(f, "♚"),
-                _ => panic!("Board has invalid piece."),
-            }?;
+impl Default for Board {
+    fn default() -> Self {
+        Self {
+            square: [
+                WHITE | ROOK,
+                WHITE | KNIGHT,
+                WHITE | BISHOP,
+                WHITE | QUEEN,
+                WHITE | KING,
+                WHITE | BISHOP,
+                WHITE | KNIGHT,
+                WHITE | ROOK,
+                WHITE | PAWN,
+                WHITE | PAWN,
+                WHITE | PAWN,
+                WHITE | PAWN,
+                WHITE | PAWN,
+                WHITE | PAWN,
+                WHITE | PAWN,
+                WHITE | PAWN,
+                EMPTY as i32,
+                EMPTY as i32,
+                EMPTY as i32,
+                EMPTY as i32,
+                EMPTY as i32,
+                EMPTY as i32,
+                EMPTY as i32,
+                EMPTY as i32,
+                EMPTY as i32,
+                EMPTY as i32,
+                EMPTY as i32,
+                EMPTY as i32,
+                EMPTY as i32,
+                EMPTY as i32,
+                EMPTY as i32,
+                EMPTY as i32,
+                EMPTY as i32,
+                EMPTY as i32,
+                EMPTY as i32,
+                EMPTY as i32,
+                EMPTY as i32,
+                EMPTY as i32,
+                EMPTY as i32,
+                EMPTY as i32,
+                EMPTY as i32,
+                EMPTY as i32,
+                EMPTY as i32,
+                EMPTY as i32,
+                EMPTY as i32,
+                EMPTY as i32,
+                EMPTY as i32,
+                EMPTY as i32,
+                BLACK | PAWN,
+                BLACK | PAWN,
+                BLACK | PAWN,
+                BLACK | PAWN,
+                BLACK | PAWN,
+                BLACK | PAWN,
+                BLACK | PAWN,
+                BLACK | PAWN,
+                BLACK | ROOK,
+                BLACK | KNIGHT,
+                BLACK | BISHOP,
+                BLACK | QUEEN,
+                BLACK | KING,
+                BLACK | BISHOP,
+                BLACK | KNIGHT,
+                BLACK | ROOK,
+            ],
+            is_white_turn: true,
         }
-        Ok(())
     }
 }
+
+impl Board {}
