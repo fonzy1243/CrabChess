@@ -1,9 +1,12 @@
-use std::ops::BitOr;
+use core::ops::BitOr;
 
 enum Color {
     White = 8,
     Black = 16,
 }
+
+pub const WHITE: Color = Color::White;
+pub const BLACK: Color = Color::Black;
 
 impl From<Color> for i32 {
     fn from(value: Color) -> Self {
@@ -20,6 +23,14 @@ enum Piece {
     Queen = 5,
     King = 6,
 }
+
+pub const EMPTY: Piece = Piece::Empty;
+pub const PAWN: Piece = Piece::Pawn;
+pub const KNIGHT: Piece = Piece::Knight;
+pub const BISHOP: Piece = Piece::Bishop;
+pub const ROOK: Piece = Piece::Rook;
+pub const QUEEN: Piece = Piece::Queen;
+pub const KING: Piece = Piece::King;
 
 impl BitOr<Piece> for Color {
     type Output = i32;
@@ -38,77 +49,81 @@ impl From<Piece> for i32 {
 #[derive(Debug)]
 pub(crate) struct Board {
     square: [i32; 64],
+    is_white_turn: bool,
 }
 
 impl Default for Board {
     fn default() -> Self {
         Self {
             square: [
-                Color::White | Piece::Rook,
-                Color::White | Piece::Knight,
-                Color::White | Piece::Bishop,
-                Color::White | Piece::Queen,
-                Color::White | Piece::King,
-                Color::White | Piece::Bishop,
-                Color::White | Piece::Knight,
-                Color::White | Piece::Rook,
-                Color::White | Piece::Pawn,
-                Color::White | Piece::Pawn,
-                Color::White | Piece::Pawn,
-                Color::White | Piece::Pawn,
-                Color::White | Piece::Pawn,
-                Color::White | Piece::Pawn,
-                Color::White | Piece::Pawn,
-                Color::White | Piece::Pawn,
-                Piece::Empty.into(),
-                Piece::Empty.into(),
-                Piece::Empty.into(),
-                Piece::Empty.into(),
-                Piece::Empty.into(),
-                Piece::Empty.into(),
-                Piece::Empty.into(),
-                Piece::Empty.into(),
-                Piece::Empty.into(),
-                Piece::Empty.into(),
-                Piece::Empty.into(),
-                Piece::Empty.into(),
-                Piece::Empty.into(),
-                Piece::Empty.into(),
-                Piece::Empty.into(),
-                Piece::Empty.into(),
-                Piece::Empty.into(),
-                Piece::Empty.into(),
-                Piece::Empty.into(),
-                Piece::Empty.into(),
-                Piece::Empty.into(),
-                Piece::Empty.into(),
-                Piece::Empty.into(),
-                Piece::Empty.into(),
-                Piece::Empty.into(),
-                Piece::Empty.into(),
-                Piece::Empty.into(),
-                Piece::Empty.into(),
-                Piece::Empty.into(),
-                Piece::Empty.into(),
-                Piece::Empty.into(),
-                Piece::Empty.into(),
-                Color::Black | Piece::Pawn,
-                Color::Black | Piece::Pawn,
-                Color::Black | Piece::Pawn,
-                Color::Black | Piece::Pawn,
-                Color::Black | Piece::Pawn,
-                Color::Black | Piece::Pawn,
-                Color::Black | Piece::Pawn,
-                Color::Black | Piece::Pawn,
-                Color::Black | Piece::Rook,
-                Color::Black | Piece::Knight,
-                Color::Black | Piece::Bishop,
-                Color::Black | Piece::Queen,
-                Color::Black | Piece::King,
-                Color::Black | Piece::Bishop,
-                Color::Black | Piece::Knight,
-                Color::Black | Piece::Rook,
+                WHITE | ROOK,
+                WHITE | KNIGHT,
+                WHITE | BISHOP,
+                WHITE | QUEEN,
+                WHITE | KING,
+                WHITE | BISHOP,
+                WHITE | KNIGHT,
+                WHITE | ROOK,
+                WHITE | PAWN,
+                WHITE | PAWN,
+                WHITE | PAWN,
+                WHITE | PAWN,
+                WHITE | PAWN,
+                WHITE | PAWN,
+                WHITE | PAWN,
+                WHITE | PAWN,
+                EMPTY as i32,
+                EMPTY as i32,
+                EMPTY as i32,
+                EMPTY as i32,
+                EMPTY as i32,
+                EMPTY as i32,
+                EMPTY as i32,
+                EMPTY as i32,
+                EMPTY as i32,
+                EMPTY as i32,
+                EMPTY as i32,
+                EMPTY as i32,
+                EMPTY as i32,
+                EMPTY as i32,
+                EMPTY as i32,
+                EMPTY as i32,
+                EMPTY as i32,
+                EMPTY as i32,
+                EMPTY as i32,
+                EMPTY as i32,
+                EMPTY as i32,
+                EMPTY as i32,
+                EMPTY as i32,
+                EMPTY as i32,
+                EMPTY as i32,
+                EMPTY as i32,
+                EMPTY as i32,
+                EMPTY as i32,
+                EMPTY as i32,
+                EMPTY as i32,
+                EMPTY as i32,
+                EMPTY as i32,
+                BLACK | PAWN,
+                BLACK | PAWN,
+                BLACK | PAWN,
+                BLACK | PAWN,
+                BLACK | PAWN,
+                BLACK | PAWN,
+                BLACK | PAWN,
+                BLACK | PAWN,
+                BLACK | ROOK,
+                BLACK | KNIGHT,
+                BLACK | BISHOP,
+                BLACK | QUEEN,
+                BLACK | KING,
+                BLACK | BISHOP,
+                BLACK | KNIGHT,
+                BLACK | ROOK,
             ],
+            is_white_turn: true,
         }
     }
 }
+
+impl Board {}
