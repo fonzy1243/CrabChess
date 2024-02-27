@@ -10,6 +10,7 @@ pub fn main() -> iced::Result {
 }
 
 // State - application state (TODO)
+#[derive(Default)]
 struct CrabChess {
     board: Board,
 }
@@ -26,7 +27,7 @@ impl Application for CrabChess {
     type Flags = ();
 
     fn new(_flags: ()) -> (CrabChess, Command<Self::Message>) {
-        (CrabChess, Command::none())
+        (CrabChess::default(), Command::none())
     }
 
     fn title(&self) -> String {
