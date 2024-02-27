@@ -1,6 +1,7 @@
-use core::ops::BitOr;
+use crate::r#move::*;
+use core::{fmt, ops::BitOr, panic};
 
-enum Color {
+pub enum Color {
     White = 8,
     Black = 16,
 }
@@ -14,7 +15,8 @@ impl From<Color> for i32 {
     }
 }
 
-enum Piece {
+#[derive(PartialEq, Eq)]
+pub enum Piece {
     Empty = 0,
     Pawn = 1,
     Knight = 2,
@@ -46,16 +48,74 @@ impl From<Piece> for i32 {
     }
 }
 
+pub fn is_sliding(piece: i32) -> bool {
+    matches!(piece & 7, x if x == BISHOP as i32 || x == ROOK as i32 || x == QUEEN as i32)
+}
+
+pub fn is_type(piece: i32, piece_type: Piece) -> bool {
+    let piece_type_num = piece_type as i32;
+    piece & 7 == piece_type_num
+}
+
+fn piece_to_char(piece: i32) -> char {
+    match piece {
+        x if x == EMPTY as i32 => ' ',
+        x if x == WHITE | PAWN => '♙',
+        x if x == WHITE | KNIGHT => '♘',
+        x if x == WHITE | BISHOP => '♗',
+        x if x == WHITE | ROOK => '♖',
+        x if x == WHITE | QUEEN => '♕',
+        x if x == WHITE | KING => '♔',
+        x if x == BLACK | PAWN => '♟',
+        x if x == BLACK | KNIGHT => '♞',
+        x if x == BLACK | BISHOP => '♝',
+        x if x == BLACK | ROOK => '♜',
+        x if x == BLACK | QUEEN => '♛',
+        x if x == BLACK | KING => '♚',
+        _ => panic!(),
+    }
+}
+
 #[derive(Debug)]
-pub(crate) struct Board {
-    square: [i32; 64],
-    is_white_turn: bool,
+pub struct Board {
+    pub squares: [i32; 64],
+    pub color_to_move: i32,
+}
+
+impl fmt::Display for Board {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        writeln!(f, "    a   b   c   d   e   f   g   h")?;
+        writeln!(f, "  ╔═══════════════════════════════╗")?;
+
+        for rank in (0..8).rev() {
+            write!(f, "{} ║", rank + 1)?;
+
+            for file in 0..8 {
+                let index = rank * 8 + file;
+                let piece = self.squares[index];
+                write!(f, " {} ", piece_to_char(piece))?;
+                if file < 7 {
+                    write!(f, "│")?;
+                }
+            }
+
+            writeln!(f, "║ {}", rank + 1)?;
+
+            if rank > 0 {
+                writeln!(f, "  ║───┼───┼───┼───┼───┼───┼───┼───║")?;
+            }
+        }
+
+        writeln!(f, "  ╚═══════════════════════════════╝")?;
+        writeln!(f, "    a   b   c   d   e   f   g   h")?;
+        Ok(())
+    }
 }
 
 impl Default for Board {
     fn default() -> Self {
         Self {
-            square: [
+            squares: [
                 WHITE | ROOK,
                 WHITE | KNIGHT,
                 WHITE | BISHOP,
@@ -121,9 +181,17 @@ impl Default for Board {
                 BLACK | KNIGHT,
                 BLACK | ROOK,
             ],
-            is_white_turn: true,
+            color_to_move: WHITE as i32,
         }
     }
 }
 
-impl Board {}
+impl Board {
+    pub fn is_color(&self, piece: i32) -> bool {
+        if self.color_to_move == WHITE as i32 {
+            piece & 8 == 8
+        } else {
+            piece & 16 == 16
+        }
+    }
+}
